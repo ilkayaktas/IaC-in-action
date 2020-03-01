@@ -18,3 +18,5 @@ VBoxManage: error: Cannot register the hard disk '/Users/ilkayaktas/Workspace/Cl
  - preceed dosyası ubuntunun otomatik kurulumu için gereklidir. Kurulum sırasında gerekli olan tüm bilgiler ve ayarlar bu dosya içerinde yer alıyor.
 
 - Ubuntu kurulumu yaparken "debconf/frontend=noninteractive" ayarı ile frontend (arayüz) seçimi yapılır. gnome ve kde bunlardan en bilinenleridir.
+
+- Post processor ile vagrant box oluşturulacaksa kullanıcı ismi ve parolanın vagrant olmasında fayda var. Aksi durumda Vagrantfile ile çalıştırırken kullanıcı adı ve parola vermek gerekecek.
