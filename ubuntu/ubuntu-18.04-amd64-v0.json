@@ -10,12 +10,12 @@
         " console-setup/ask_detect=false<wait>",
         " console-setup/layoutcode=us<wait>",
         " console-setup/modelcode=pc105<wait>",
-        " debconf/frontend=newt<wait>",
+        " debconf/frontend=noninteractive<wait>",
         " debian-installer=en_US.UTF-8<wait>",
         " fb=false<wait>",
         " initrd=/install/initrd.gz<wait>",
         " kbd-chooser/method=us<wait>",
-        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/layout=Turkey<wait>",
         " keyboard-configuration/variant=USA<wait>",
         " locale=en_US.UTF-8<wait>",
         " netcfg/get_domain=vm<wait>",
@@ -26,7 +26,7 @@
         " -- <wait>",
         "<enter><wait>"
       ],
-      "boot_wait": "10s",
+      "boot_wait": "5s",
       "disk_size": "{{user `disk_size`}}",
       "guest_additions_url": "{{ user `guest_additions_url` }}",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
@@ -61,9 +61,18 @@
       "execute_command": "echo 'iaktas' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "expect_disconnect": true,
       "scripts": [
+        "{{template_dir}}/scripts/sshd.sh",
+        "{{template_dir}}/scripts/sudoers-v2.sh",
+        "{{template_dir}}/scripts/virtualbox-v2.sh",
         "{{template_dir}}/scripts/iaktas.sh"
       ],
       "type": "shell"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "{{ user `build_directory` }}/{{user `box_basename`}}.{{.Provider}}.box",
+      "type": "vagrant"
     }
   ],
   "variables": {

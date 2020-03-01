@@ -1,6 +1,6 @@
 #!/bin/sh 
 
 cd ~
-mkdir iaktas
+mkdir iaktas 
 cd iaktas
-echo "Sana selam olsun!" > iaktas.txt
+echo "Sana selam olsun!" > iaktas+"$(date +'%s')".txt
