@@ -21,4 +21,4 @@ VBoxManage: error: Cannot register the hard disk '/Users/ilkayaktas/Workspace/Cl
 
 - Post processor ile vagrant box oluşturulacaksa kullanıcı ismi ve parolanın vagrant olmasında fayda var. Aksi durumda Vagrantfile ile çalıştırırken kullanıcı adı ve parola vermek gerekecek.
 
-- "execute_command": "echo 'iaktas' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'", Burada ifade edilen şey **sh -eux** scriptleri için sudo parolasını terminalden almak yerine standart inputtan alır. Standart inputa da echo ile parola yazılır. -E "execute_command": "echo 'iaktas' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+- execute_command, scriptlerin nasıl çalıştırılacaağını gösteren komuttur. Ubuntu gibi root kullanıcısı olmayan işletim sistemleri için bu komut ile sudo parolası verilebilir. ***"echo 'password' | sudo -S env {{ .Vars }} {{ .Path }}",***. -S, sudo parolasını terminalden almak yerine standart inputtan alır.
