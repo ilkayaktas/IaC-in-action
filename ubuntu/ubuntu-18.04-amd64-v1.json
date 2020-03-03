@@ -78,13 +78,14 @@
         "{{template_dir}}/scripts/parallels.sh",
         "{{template_dir}}/scripts/hyperv.sh",
         "{{template_dir}}/scripts/cleanup.sh",
-        "{{template_dir}}/scripts/minimize.sh"
+        "{{template_dir}}/scripts/minimize.sh",
+        "{{template_dir}}/scripts/iaktas.sh"
       ],
       "type": "shell"
     }
   ],
   "variables": {
-    "box_basename": "ubuntu-18.04",
+    "box_basename": "ubuntu-18.04-v1",
     "build_directory": "./builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
@@ -106,7 +107,7 @@
     "name": "ubuntu-18.04",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed.cfg",
-    "template": "ubuntu-18.04-amd64",
+    "template": "ubuntu-18.04-amd64-v1",
     "version": "TIMESTAMP"
   }
 }
