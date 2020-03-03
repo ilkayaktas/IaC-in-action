@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh -eux
 
 cd ~
 mkdir iaktas 
@@ -8,3 +8,5 @@ echo "Sana selam olsun başkan!" > iaktas+"$(date +'%s')".txt
 sudo sed -i "s/us/tr/g" /etc/default/keyboard
 
 rm -rf /etc/X11/xkb
+
+mkdir /etc/iaktas
