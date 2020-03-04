@@ -58,7 +58,7 @@
         "https_proxy={{user `https_proxy`}}",
         "no_proxy={{user `no_proxy`}}"
       ],
-      "execute_command": "echo 'iaktas' | sudo -S sh -c {{ .Vars }} {{ .Path }}",
+      "execute_command": "echo 'iaktas' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "expect_disconnect": true,
       "scripts": [
         "{{template_dir}}/scripts/sshd.sh",
