@@ -8,4 +8,4 @@ echo "Sana selam olsun başkan!" > iaktas+"$(date +'%s')".txt
 sudo sed -i "s/us/tr/g" /etc/default/keyboard
 
 mkdir /etc/iaktas4
-echo iaktas | sudo -S -E mkdir /etc/iaktas5
+echo 'vagrant' | sudo -S -E mkdir /etc/iaktas5

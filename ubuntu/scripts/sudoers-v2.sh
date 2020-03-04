@@ -8,4 +8,4 @@ chmod 440 /etc/sudoers.d/99_iaktas;
 
 mkdir /etc/iaktas1
 sudo mkdir /etc/iaktas2
-echo iaktas | sudo -S -E mkdir /etc/iaktas3
+echo 'iaktas' | sudo -S -E mkdir /etc/iaktas3

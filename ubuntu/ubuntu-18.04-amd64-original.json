@@ -26,7 +26,7 @@
         " -- <wait>",
         "<enter><wait>"
       ],
-      "boot_wait": "5s",
+      "boot_wait": "10s",
       "disk_size": "{{user `disk_size`}}",
       "guest_additions_url": "{{ user `guest_additions_url` }}",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
@@ -38,10 +38,10 @@
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
       "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-virtualbox",
-      "shutdown_command": "echo 'iaktas' | sudo -S shutdown -P now",
-      "ssh_password": "iaktas",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ssh_password": "vagrant",
       "ssh_port": 22,
-      "ssh_username": "iaktas",
+      "ssh_username": "vagrant",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
       "memory": "{{ user `memory` }}",
@@ -50,34 +50,34 @@
       "vm_name": "{{ user `template` }}"
     }
   ],
-  "provisioners": [
-    {
-      "environment_vars": [
-        "HOME_DIR=/home/iaktas",
-        "http_proxy={{user `http_proxy`}}",
-        "https_proxy={{user `https_proxy`}}",
-        "no_proxy={{user `no_proxy`}}"
-      ],
-      "execute_command": "echo 'iaktas' | sudo -S sh -c {{ .Vars }} {{ .Path }}",
-      "expect_disconnect": true,
-      "scripts": [
-        "{{template_dir}}/scripts/sshd.sh",
-        "{{template_dir}}/scripts/sudoers-v2.sh",
-        "{{template_dir}}/scripts/virtualbox-v2.sh",
-        "{{template_dir}}/scripts/iaktas.sh"
-      ],
-      "type": "shell"
-    }
-  ],
   "post-processors": [
     {
       "output": "{{ user `build_directory` }}/{{user `box_basename`}}.{{.Provider}}.box",
       "type": "vagrant"
     }
   ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "{{template_dir}}/scripts/sshd.sh",
+        "{{template_dir}}/scripts/sudoers.sh",
+        "{{template_dir}}/scripts/virtualbox.sh",
+        "{{template_dir}}/scripts/iaktas.sh"
+      ],
+      "type": "shell"
+    }
+  ],
   "variables": {
-    "box_basename": "ubuntu-18.04-v0",
-    "build_directory": "./builds",
+    "box_basename": "ubuntu-18.04",
+    "build_directory": "../builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "cpus": "1",
@@ -85,7 +85,7 @@
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
-    "https_proxy": "{{env `https_proxy`}}",   
+    "https_proxy": "{{env `https_proxy`}}",
     "hyperv_generation": "2",
     "hyperv_switch": "{{env `hyperv_switch`}}",
     "guest_additions_url": "",
@@ -97,8 +97,8 @@
     "mirror_directory": "ubuntu/releases/18.04.4/release",
     "name": "ubuntu-18.04",
     "no_proxy": "{{env `no_proxy`}}",
-    "preseed_path": "preseed-v2.cfg",
-    "template": "ubuntu-18.04-amd64-v0",
+    "preseed_path": "preseed-orj.cfg",
+    "template": "ubuntu-18.04-amd64",
     "version": "TIMESTAMP"
   }
 }
