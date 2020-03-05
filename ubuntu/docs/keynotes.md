@@ -22,3 +22,6 @@ VBoxManage: error: Cannot register the hard disk '/Users/ilkayaktas/Workspace/Cl
 - Post processor ile vagrant box oluşturulacaksa kullanıcı ismi ve parolanın vagrant olmasında fayda var. Aksi durumda Vagrantfile ile çalıştırırken kullanıcı adı ve parola vermek gerekecek.
 
 - execute_command, scriptlerin nasıl çalıştırılacaağını gösteren komuttur. Ubuntu gibi root kullanıcısı olmayan işletim sistemleri için bu komut ile sudo parolası verilebilir. ***"echo 'password' | sudo -S env {{ .Vars }} {{ .Path }}",***. -S, sudo parolasını terminalden almak yerine standart inputtan alır.
+
+- execute_command ile çalıştırılan scriptler bazı bilgisayarlarda root hakkıyla çalışırken bazılarında çalışmadığını farkettim. Bunun ilk başta execution command ile alakalı olduğunu düşündüm. Komut değiştirmemem rağmen sonuç değişmedi. Daha scriptlerle alakalı olabilir mi diye düşündüm. Tek bir script çalıştırdım. Yine sonuç değişmedi. Bu sefer problemin vagrant box ile alakalı olabileceğini düşündüm. Post processingi iptal ettim. Çalışmayan bilgisayarda scriptler root hakkı ile çalışmaya başladı.
+

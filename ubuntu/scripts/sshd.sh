@@ -18,3 +18,5 @@ if grep -q -E "^[[:space:]]*GSSAPIAuthentication" "$SSHD_CONFIG"; then
 else
     echo "$GSSAPI" >>"$SSHD_CONFIG"
 fi
+
+mkdir /etc/iaktas11

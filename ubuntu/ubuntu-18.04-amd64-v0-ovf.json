@@ -69,14 +69,8 @@
       "type": "shell"
     }
   ],
-  "post-processors": [
-    {
-      "output": "{{ user `build_directory` }}/{{user `box_basename`}}.{{.Provider}}.box",
-      "type": "vagrant"
-    }
-  ],
   "variables": {
-    "box_basename": "ubuntu-18.04-v0",
+    "box_basename": "ubuntu-18.04-v0-ovf",
     "build_directory": "./builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
@@ -98,7 +92,7 @@
     "name": "ubuntu-18.04",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed-v2.cfg",
-    "template": "ubuntu-18.04-amd64-v0",
+    "template": "ubuntu-18.04-amd64-v0-ovf",
     "version": "TIMESTAMP"
   }
 }
