@@ -70,7 +70,7 @@
         "{{template_dir}}/scripts/sshd.sh",
         "{{template_dir}}/scripts/sudoers.sh",
         "{{template_dir}}/scripts/virtualbox.sh",
-        "{{template_dir}}/scripts/k8s_install.sh"
+        "{{template_dir}}/scripts/k8s-install.sh"
       ],
       "type": "shell"
     }
