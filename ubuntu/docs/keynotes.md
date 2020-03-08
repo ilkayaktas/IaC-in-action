@@ -25,3 +25,4 @@ VBoxManage: error: Cannot register the hard disk '/Users/ilkayaktas/Workspace/Cl
 
 - execute_command ile çalıştırılan scriptler bazı bilgisayarlarda root hakkıyla çalışırken bazılarında çalışmadığını farkettim. Bunun ilk başta execution command ile alakalı olduğunu düşündüm. Komut değiştirmemem rağmen sonuç değişmedi. Daha scriptlerle alakalı olabilir mi diye düşündüm. Tek bir script çalıştırdım. Yine sonuç değişmedi. Bu sefer problemin vagrant box ile alakalı olabileceğini düşündüm. Post processingi iptal ettim. Çalışmayan bilgisayarda scriptler root hakkı ile çalışmaya başladı.
 
+- Kubernetes node'ları için minimum 2 cpu'lu makine gerekiyor.
