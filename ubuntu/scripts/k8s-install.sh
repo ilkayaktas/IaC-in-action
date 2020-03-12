@@ -12,6 +12,9 @@ echo 'iaktas' | sudo -S -E mkdir /etc/iaktas5
 
 sudo apt-get update
 
+# du command
+sudo apt install ncdu
+
 # Required for selinux configuration
 sudo apt install selinux-utils
 sudo apt install policycoreutils 
