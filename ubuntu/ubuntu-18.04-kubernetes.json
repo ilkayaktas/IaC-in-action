@@ -111,15 +111,7 @@
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
         ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
-        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"],
-        ["hostonlyif", "ipconfig", "{{user `network_interface_name`}}", "--ip", "{{user `network_interface_ip`}}"],
-        ["dhcpserver", "add", "--ifname", "{{user `network_interface_name`}}", "--ip", "{{user `network_dhcp_server_ip`}}",
-          "--netmask", "{{user `network_dhcp_netmask`}}", "--lowerip", "{{user `network_dhcp_lower_ip`}}", "--upperip", "{{user `network_dhcp_upper_ip`}}"
-        ],
-        ["dhcpserver", "modify", "--ifname", "{{user `network_interface_name`}}","--enable"],
-        ["modifyvm", "{{.Name}}", "--nic1", "hostonly"],
-        ["modifyvm", "{{.Name}}", "--hostonlyadapter1", "{{user `network_interface_name`}}"],
-        ["modifyvm", "{{.Name}}", "--nic2", "nat"]
+        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"]
       ],
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}-node1",
@@ -173,17 +165,8 @@
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
         ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
-        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"],
-        ["hostonlyif", "ipconfig", "{{user `network_interface_name`}}", "--ip", "{{user `network_interface_ip`}}"],
-        ["dhcpserver", "add", "--ifname", "{{user `network_interface_name`}}", "--ip", "{{user `network_dhcp_server_ip`}}",
-          "--netmask", "{{user `network_dhcp_netmask`}}", "--lowerip", "{{user `network_dhcp_lower_ip`}}", "--upperip", "{{user `network_dhcp_upper_ip`}}"
-        ],
-        ["dhcpserver", "modify", "--ifname", "{{user `network_interface_name`}}","--enable"],
-        ["modifyvm", "{{.Name}}", "--nic1", "hostonly"],
-        ["modifyvm", "{{.Name}}", "--hostonlyadapter1", "{{user `network_interface_name`}}"],
-        ["modifyvm", "{{.Name}}", "--nic2", "nat"]
+        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"]
       ],
-
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}-node2",
       "name":"{{ user `template` }}-node2"
@@ -204,6 +187,7 @@
         "{{template_dir}}/scripts/sshd.sh",
         "{{template_dir}}/scripts/sudoers-v2.sh",
         "{{template_dir}}/scripts/virtualbox-v2.sh",
+        "{{template_dir}}/scripts/vagrant.sh",
         "{{template_dir}}/scripts/k8s-install.sh"
       ],
       "type": "shell"
