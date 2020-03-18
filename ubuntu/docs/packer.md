@@ -20,18 +20,22 @@ Packer, Infrastructure as Code kavramının bir parçası olarak kod -diğer bir
 
 Öncelikle [şu adresten](https://packer.io/intro/getting-started/install.html) kurulum yapılmalı. Terminalden ***packer version*** komutu girildiğinde kuruduğunuz sürüm numarasını görmeniz gerekmektedir.
 
-Template
+**Template**
+Bir ya da birden fazla build işleminin tanımlandığı json dosyasıdır. Packer bu dosyayı okur ve içerdiği bilgilere göre imaj oluşturur.
 
-Artifacts
+**Artifacts**
+Packer dosyasını build işleminin çıktısı. Genelde dosya veya dosyalardan oluşur. Her build işlemi tek bir articat oluşturur. VirtualoBox builditercih edilen formata göre bir ya da daha fazla dosya içerirken EC2 build işlemi her bir region için AMI ID kümesi içerir.
 
-Variables
+**Builders**
+Bir platform için makine imajı oluşturmaya yarayan Paker bileşenidir. Packer Template dosyasında yer alır. Bir makinenin nasıl oluşturulacağına dair komutları içerir. Builder içerisinde işletim sistemi boot_command'ları verilip manuel kurulum sırasında yapılan klavye girişleri de otomatikleştirilir (sağ/sol/yukarı/aşağı tuşları, enter, tab vs).
 
-Builders
+**Provisioners**
+Boş bir işletim sistemi kurarak makine kurulumu tamamlanmış olur ama bu bomboş bir imajdır aslında. Bu imaj içinde işletim sistemi seviyesinde yapılamak istenen bir çok şey olabilir. Çeşitli kullanıcılar oluşturmak, network ayarları yapmak, çeşitli scriptler çalıştırmak gibi. Kurulumu yapılmış, çalışmakta olan makine, statik imaja dönüştürülmeden önce yapılacak yazılım yükleme/konfigüre etmek gibi işlemlerin yapıldığı Packer bileşenidir. Dokümantasyondan bakarsanız bir çok provisioner olduğunu görürsünüz. Shell scripting, Chef, Puppet, Ansible, PowerShell bunlardan bazılarıdır. Detaylı bilgi için şuraya bakabilirsiniz (https://packer.io/docs/provisioners/index.html).
 
-Provisioners
+**Post-Processors**
+Provisioner'lerde tanımlanan işler tamamlandıktan sonra oluşturulan statik imaj ile neler yapılacağının tanımlandığı Packer bileşenidir. Örnek olarak Vagrant Box üretme, çıkan imajı sıkıştırma, AWS'ye upload etme gibi.
 
-Post-Processors
-
+PACKER_CACHE_DIR=/Users/ilkayaktas/Workspace/CloudProjects/packer_cache
 
 
 
