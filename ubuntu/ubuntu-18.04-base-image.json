@@ -79,7 +79,8 @@
   "post-processors": [
     {
       "output": "{{ user `build_directory` }}/{{user `box_basename`}}.{{.Provider}}.box",
-      "type": "vagrant"
+      "type": "vagrant",
+      "keep_input_artifact": true
     }
   ],
   "variables": {
