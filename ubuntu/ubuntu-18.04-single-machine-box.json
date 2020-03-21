@@ -65,7 +65,7 @@
         "{{template_dir}}/scripts/sudoers-v2.sh",
         "{{template_dir}}/scripts/virtualbox-v2.sh",
         "{{template_dir}}/scripts/vagrant.sh",
-        "{{template_dir}}/scripts/custom-script.sh"
+        "{{template_dir}}/scripts/additional-packages.sh"
       ],
       "type": "shell"
     }
