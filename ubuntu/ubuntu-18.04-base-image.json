@@ -77,7 +77,7 @@
     }
   ],
   "variables": {
-    "box_basename": "ubuntu-18.04-single-machine-box",
+    "box_basename": "ubuntu-18.04-base-image",
     "build_directory": "./builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
@@ -99,7 +99,7 @@
     "name": "ubuntu-18.04",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed.cfg",
-    "template": "ubuntu-18.04-single-machine-box",
+    "template": "ubuntu-18.04-base-image",
     "version": "TIMESTAMP"
   }
 }
