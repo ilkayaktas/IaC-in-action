@@ -61,10 +61,16 @@
       "execute_command": "echo 'iaktas' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "expect_disconnect": true,
       "scripts": [
+        "{{template_dir}}/scripts/update.sh",
+        "{{template_dir}}/scripts/motd.sh",
         "{{template_dir}}/scripts/sshd.sh",
+        "{{template_dir}}/scripts/networking.sh",
         "{{template_dir}}/scripts/sudoers-v2.sh",
-        "{{template_dir}}/scripts/virtualbox-v2.sh",
         "{{template_dir}}/scripts/vagrant.sh",
+        "{{template_dir}}/scripts/virtualbox-v2.sh",
+        "{{template_dir}}/scripts/parallels.sh",
+        "{{template_dir}}/scripts/cleanup.sh",
+        "{{template_dir}}/scripts/minimize.sh",
         "{{template_dir}}/scripts/additional-packages.sh"
       ],
       "type": "shell"
