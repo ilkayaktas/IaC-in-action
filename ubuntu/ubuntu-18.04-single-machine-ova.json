@@ -22,7 +22,7 @@
         " netcfg/get_hostname=master.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/master/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
