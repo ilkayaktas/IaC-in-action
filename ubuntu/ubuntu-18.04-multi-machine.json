@@ -22,7 +22,7 @@
         " netcfg/get_hostname=master.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/master/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
@@ -73,7 +73,7 @@
         " netcfg/get_hostname=node1.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/node1/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
@@ -124,7 +124,7 @@
         " netcfg/get_hostname=node2.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/node2/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
