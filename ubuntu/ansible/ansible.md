@@ -153,19 +153,89 @@ Redhat tabanlı işletim sistemlerine paket yüklemek, silmek ve güncellemek i�
     $ ansible kubernetes-cluster -m yum -a "name=acme state=latest"
     $ ansible kubernetes-cluster -m yum -a "name=acme state=absent"
 
-Service Modülü
+**Service Modülü**
 İşletim sistemi servislerini durdurup başlatmak için kullanılır.
 
     $ ansible kubernetes-cluster -m service -a "name=httpd state=started"
     $ ansible kubernetes-cluster -m service -a "name=httpd state=restarted"
     $ ansible kubernetes-cluster -m service -a "name=httpd state=stopped"
 
-User Modülü 
+**User Modülü**
 Kullanıcı oluşturmak, güncellemek ve silmek için kullanılır.
 
     $ ansible all -m user -a "name=foo password=<crypted password here>"
     $ ansible all -m user -a "name=foo state=absent"
 
-Setup Modülü
+**Setup Modülü**
 Tüm sistem hakkında bilgi almak için kullanılır.
 $ ansible all -m setup
+
+**Playbooks**
+Playbook'lar Ansible'ın konfigürasyon, deployment ve orchestration dilidir.
+
+Teşbihte hata olmaz Ansible bir atölye olsa, module'ler araç takımınız, playbook'lar bu araçların kullanım klavuzları ve inventory dosyasında belirttiğiniz host'lar ise hammaddenizdir.
+
+Temel düzeyde, playbook'lar uzak makinelerin yapılandırmalarını ve deployment'ları yönetmek için kullanılır.
+
+Playbook'lar manual sıralanmış task'ları orchestre eder. Task'ları sync ya da asyn çalıştırabilir.
+
+Her playbook bir ya da birden fazla play'den oluşabilir. Play bir grup task'tan oluş. Task'ların yaptığı ise temel olarak Ansible module'lerini çalıştırmak. Play'lerin amacı bir grup host'ta belli taskları çalıştırmaktır. Bu sayede webservers grubundaki tüm makinlerde bir grup task, database server grubundaki makinelerde başka tasklar çalıştırılabilir.
+
+**Tek play'li playbook örneği**
+
+    ---
+    - hosts: webservers
+    vars:
+        http_port: 80
+        max_clients: 200
+    remote_user: root
+    tasks:
+    - name: ensure apache is at the latest version
+        yum:
+        name: httpd
+        state: latest
+    - name: write the apache config file
+        template:
+        src: /srv/httpd.j2
+        dest: /etc/httpd.conf
+        notify:
+        - restart apache
+    - name: ensure apache is running
+        service:
+        name: httpd
+        state: started
+    handlers:
+        - name: restart apache
+        service:
+            name: httpd
+            state: restarted
+
+
+**Çoklu play örneği**
+
+    ---
+    - hosts: webservers
+    remote_user: root
+
+    tasks:
+    - name: ensure apache is at the latest version
+        yum:
+        name: httpd
+        state: latest
+    - name: write the apache config file
+        template:
+        src: /srv/httpd.j2
+        dest: /etc/httpd.conf
+
+    - hosts: databases
+    remote_user: root
+
+    tasks:
+    - name: ensure postgresql is at the latest version
+        yum:
+        name: postgresql
+        state: latest
+    - name: ensure that postgresql is started
+        service:
+        name: postgresql
+        state: started
