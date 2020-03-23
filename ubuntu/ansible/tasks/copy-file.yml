@@ -2,7 +2,7 @@
 - name: Copy file with owner and permissions
   copy:
     src: ../files/something.txt
-    dest: /etc/something.conf
+    dest: /home/iaktas/something.conf
     owner: iaktas
     group: iaktas
     mode: '0644'

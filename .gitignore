@@ -1,1 +1,2 @@
 ubuntu/builds/
+ubuntu/ansible/*.retry

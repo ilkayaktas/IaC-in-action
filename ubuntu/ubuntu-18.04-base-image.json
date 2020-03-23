@@ -42,6 +42,7 @@
       "ssh_password": "iaktas",
       "ssh_port": 22,
       "ssh_username": "iaktas",
+      "format": "ova",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
       "memory": "{{ user `memory` }}",

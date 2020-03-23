@@ -1,7 +1,12 @@
 Ansible inventory dosyası içinde IP ya da domain name olabilir. Bunlara ek olarak alias, tek bir host için tanımlanmış host variable ya da birçok host için tanımlanmış group varaiables olabilir. Birden fazla ansible dosyası oluşturulabilir. Bu dosyalar -i parametresi ile komuta verilir. Ayrıca çeşitli scriptlerle dinamik olarak da inventory hostları kullanılabilir.
 
 Ansible remote makinelere ssh protokolü ile bağlanır. Ansible native OpenSSH kullnaır.
-Ssh bağlantısı yaparken tüm makinelere aynı kullanıcı adı ile bağlanır. public SSH key'i hedef sistemlerdeki authorized_keys dosyasına kopyalamak en güzelidir. İhtiyaç ahlinde farklı kullanıcı isimleriyle de bağlantı sağlanabilir: -u parametresi ile, inventory doyasına bu bilgi eklenerek, konfigürasyon dosyasına eklenerek ya da environemnt variable olarak eklenebilir.
+Ssh bağlantısı yaparken tüm makinelere aynı kullanıcı adı ile bağlanır. public SSH key'i hedef sistemlerdeki authorized_keys dosyasına kopyalamak en güzelidir. 
+Bu aslında şu demektir: ssh key kullanarak uzak makinelere parola sormadan bağlantı kurmak. Bunu yapmak için önce kendi makinemizde aşağıdaki ilk komut ile rsa anahtarı oluşturulur. İkinci komutla bu anahtar parametre olarak verilen ip'deki kullanıcının authorized_keys dosyasına eklenmiş olur.
+
+    ssh-keygen -t rsa
+    ssh-copy-id -i ~/.ssh/<public_key_file> <user>@<remote machine> 
+İhtiyaç halinde farklı kullanıcı isimleriyle de bağlantı sağlanabilir: -u parametresi ile, inventory doyasına bu bilgi eklenerek, konfigürasyon dosyasına eklenerek ya da environemnt variable olarak eklenebilir.
 
 Ansible proje yapısı oluşturulduktan sonra (ansible.cfg, inventory.ini) şu komutla ilk denemeler yapılabilir.
 
@@ -239,3 +244,64 @@ Her playbook bir ya da birden fazla play'den oluşabilir. Play bir grup task'tan
         service:
         name: postgresql
         state: started
+
+
+İlk denemeyi ping atarak yapabiliriz. İnventory dosyası içerisinde bağlantı kuracağımız sanal makinenin ip addresi yazılır. Ben şu şekilde oluşturdum:
+
+    [kubernetes-cluster]
+    192.168.56.103 
+
+Ansible ile deneme yapmadan önce bu makineye terminalden ping atarak bağlantının olduğundan emin olunur. Daha sonrasında yapmamız gereken ise ssh bağlantısını parola ile değil ssh key aracılığı ile yapmak gerekir. Bunu test etmek için aşağıdaki komutu yazdığımızda eğer şifresiz bağlantı kurabilirseniz sonraki adıma geçebilirsiniz. Ya da ssh key'i hedef bilgisayara şöyle kopyalayabilirsiniz.
+
+    ssh-keygen -t rsa // generate ssh key
+    ssh-copy-id -i ~/.ssh/<public_key_file> <user>@<remote machine> // copy public ssh key to target machine
+
+**Ping via Ansible**
+
+    ansible all -m ping -u iaktas -vvv // -vvv verbose loglar için eklenmiştir. iaktas hedef bilgisayardaki kullanıcı adıdır.
+
+Şu şekilde bir çıktı görmeniz gerekir. Eğer hata oluşmuşsa loglara bakmanız gerekir. Muhtemel hata durumları şunlar olabilir: ssh key'ler aktarılmamış olabilir, ip adresi hatalı ya da ulaşılmaz olabilir ya da kullanıcı ismi yanlış yazılmış olabilir.
+
+    192.168.56.103 | SUCCESS => {
+        "changed": false,
+        "invocation": {
+            "module_args": {
+                "data": "pong"
+            }
+        },
+        "ping": "pong"
+    }    
+
+**Copy via Ansible**
+
+    ansible 192.168.56.103 -u iaktas -m copy -a "src=files/something.txt dest=/home/iaktas"    
+
+files/something.txt dosyasını iaktas kullanıcılı 192.168.56.103 makinesinde /home/iaktas dizinine kopyalar.
+
+İlk Playbook
+Github repository'deki 01_copy_playbook.yml dosyasına bakarsanız şöyle bir içerik göreceksiniz.
+
+    1 ---
+    2 - hosts: kubernetes-cluster
+    3 vars_files:
+    4     - vars/config.yml
+    5 tasks:
+    6     - name: Copy files from yml 
+    7     include_tasks: tasks/copy-file.yml
+    8     - name: Copy files from task
+    9     copy:
+    10         src: ../files/something.txt
+    11         dest: /home/iaktas/something1.conf
+    12         owner: iaktas
+    13         group: iaktas
+    14         mode: '0644'  
+    15 ...
+
+1. inventory dosyasında oluşturulan kubernetes-cluster grupu. Task'ların hepsi bu gruptaki bilgisayarların hepsinde çalıştırılır.
+3. Konfigürasyon dosyalarını içerir. Bu playbook'ta kullanmadık fakat ilerleyen örneklerde gerek olacak.
+5. Çalıştırılacak tüm tasklar buraya eklenir.
+6. İlk Task'ın ismi. Ansible çalıştırıldığında bu task'ın çalışıp çalışmadını loglardan takip edebilirsiniz.
+7. İlk task bir dosya'dan include ediliyor.
+8. İkinci task'ın ismi.
+9. İkinci task'ta çalıştırılacak module (copy)
+10-14. Copy module'un parametreleridir. 

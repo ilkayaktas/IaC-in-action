@@ -1,0 +1,9 @@
+---
+kubernetes_machines:
+   - kubernetes-master
+   - kubernetes-node1
+   - kubernetes-node2
+ova_path: /Users/ilkayaktas/Workspace/CloudProjects/base-kubernetes/online-base-image/scope-infra/01_packer/builds/packer-centos-7.7-x86_64-virtualbox/centos-7.7-x86_64.ova
+disk_base_dir: '/Users/ilkayaktas/VirtualBox\ VMs/{{ item }}'
+vm_ssh_password: iaktas
+...
