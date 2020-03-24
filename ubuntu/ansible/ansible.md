@@ -2,7 +2,7 @@ Ansible inventory dosyası içinde IP ya da domain name olabilir. Bunlara ek ola
 
 Ansible remote makinelere ssh protokolü ile bağlanır. Ansible native OpenSSH kullnaır.
 Ssh bağlantısı yaparken tüm makinelere aynı kullanıcı adı ile bağlanır. public SSH key'i hedef sistemlerdeki authorized_keys dosyasına kopyalamak en güzelidir. 
-Bu aslında şu demektir: ssh key kullanarak uzak makinelere parola sormadan bağlantı kurmak. Bunu yapmak için önce kendi makinemizde aşağıdaki ilk komut ile rsa anahtarı oluşturulur. İkinci komutla bu anahtar parametre olarak verilen ip'deki kullanıcının authorized_keys dosyasına eklenmiş olur.
+Bu aslında şu demektir: ssh key kullanarak uzak makinelere parola sormadan bağlantı kurmak. Bunu yapmak için önce kendi makinemizde aşağıdaki ilk komut ile rsa anahtarı oluşturulur. Bunu ~/.ssh dizininde yapmanız gerekmektedir. Ya da oluşan dosyaları bu dizine kopyalamalısınız. İkinci komutla bu anahtar parametre olarak verilen ip'deki kullanıcının authorized_keys dosyasına eklenmiş olur.
 
     ssh-keygen -t rsa
     ssh-copy-id -i ~/.ssh/<public_key_file> <user>@<remote machine> 
@@ -305,3 +305,8 @@ Github repository'deki 01_copy_playbook.yml dosyasına bakarsanız şöyle bir i
 8. İkinci task'ın ismi.
 9. İkinci task'ta çalıştırılacak module (copy)
 10-14. Copy module'un parametreleridir. 
+
+**Playbook Çalıştırma**
+Aşağıdaki komut ile dizinde oluşturduğumuz playbook'u iaktas kullanıcısı ile çalıştırabiliriz. Kullanıcı adı konfigürasyonu yapacağımız bilgisayarlardaki kullanıcı ismidir. Tüm bilgisayarlarda bu kullanıcı bulunmalıdır.
+
+    ansible-playbook -u iaktas 01_copy_playbook.yml
