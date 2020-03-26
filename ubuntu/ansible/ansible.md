@@ -322,3 +322,54 @@ remote_user: Remote user name
 Task'lar sırayla çalıştırılır. Tüm bilgisayarlar aynı anda aynı task direktiflerini alır. Bir task bitmeden diğerine geçilmez.
 Temel olarak bir task'ın görevi, bir module'ü gerekli argumanlarla çalıştırmaktır.
 Tüm task'ların bir ismi olmak zorundadır. Task'ın ne yaptığına dair açıklayıcı bir tanım olabilir. Playbook çalıştırılırken bunları output olarak görürüz.
+
+**Condition**
+BAzen bazı host'lar için bazı adımların atlanmasını isteyebilirsiniz. Bu bazen belli versiyon bir işletim sisteminde bir paketin yüklenmemesi olabilir, bir konfigürasyon ayarının yapılmaması oalbilir. Ya da bir play'ın sonucu başka bir değişkene ya da önceki bir task'a bağlı olabilir. Bu içinde jinja2 expression bulunan *when* ifadesi ile yapılır.
+
+    tasks:
+    - name: "shut down Debian flavored systems"
+        command: /sbin/shutdown -t now
+        when: ansible_facts['os_family'] == "Debian"
+        # note that all variables can be used directly in conditionals without double curly braces
+
+**Loop - Conditional Birlikte Kullanımı**
+When ile Loop birlikte kullanılırken unutulmaması gereken birşey; when her item için ayrı ayrı işletilir.
+
+    tasks:
+        - command: echo {{ item }}
+        loop: [ 0, 2, 4, 6, 8, 10 ]
+        when: item > 5
+
+**Loops**
+
+Task'ların tekrarlı çalıştırılması için kullanılır.
+
+    - name: add several users
+      user:
+        name: "{{ item }}"
+        state: present
+        groups: "wheel"
+      loop:
+         - testuser1
+         - testuser2
+
+Yukarıdaki gibi bir kullanımı vardır. Loop'a parametre olarak variables'ta oluşturulan bir liste de verilebilir.
+
+    loop: "{{ somelist }}"
+
+Looping ober inventory
+
+    # show all the hosts in the inventory
+    - debug:
+        msg: "{{ item }}"
+    loop: "{{ groups['all'] }}"
+
+    # show all the hosts in the current play
+    - debug:
+        msg: "{{ item }}"
+    loop: "{{ ansible_play_batch }}"
+
+    # show all the hosts matching the pattern, ie all but the group www
+    - debug:
+        msg: "{{ item }}"
+      loop: "{{ query('inventory_hostnames', 'all:!www') }}"
