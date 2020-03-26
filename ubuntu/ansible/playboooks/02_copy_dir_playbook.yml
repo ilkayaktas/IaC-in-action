@@ -1,6 +1,7 @@
-# ansible-playbook playboooks/01_copy_playbook.yml -u iaktas
+# ansible-playbook playboooks/02_copy_dir_playbook.yml
 ---
 - hosts: kubernetes-cluster
+  remote_user: iaktas   # remote user buraya eklendiği için ansible-playbook ile çalıştırılırken -u parametresi vermeye gerek yok
   vars_files:
     - ../vars/config.yml
   tasks:
@@ -8,10 +9,9 @@
       include_tasks: ../tasks/copy-file.yml
     - name: Copy files from task
       copy:
-        src: ../files/something.txt
-        dest: /home/iaktas/something1.conf
+        src: ../files/
+        dest: /home/iaktas/
         owner: iaktas
         group: iaktas
         mode: '0644'  
 ...
-

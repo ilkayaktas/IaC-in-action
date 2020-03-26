@@ -304,9 +304,21 @@ Github repository'deki 01_copy_playbook.yml dosyasına bakarsanız şöyle bir i
 7. İlk task bir dosya'dan include ediliyor.
 8. İkinci task'ın ismi.
 9. İkinci task'ta çalıştırılacak module (copy)
-10-14. Copy module'un parametreleridir. 
+10. Copy module'un parametreleridir. 
+
+    ansible-playbook playboooks/01_copy_playbook.yml -u iaktas
+
+-u parametresi ile kullanıcı ismi vermek yerine bunu playbook içerisinde hosts altında *become_user: iaktas* şeklinde de verebiliriz.
 
 **Playbook Çalıştırma**
 Aşağıdaki komut ile dizinde oluşturduğumuz playbook'u iaktas kullanıcısı ile çalıştırabiliriz. Kullanıcı adı konfigürasyonu yapacağımız bilgisayarlardaki kullanıcı ismidir. Tüm bilgisayarlarda bu kullanıcı bulunmalıdır.
 
     ansible-playbook -u iaktas 01_copy_playbook.yml
+
+hosts: Bir ya da birden fazla group ya da host pattern. Virgül ile ayrılabilir.
+remote_user: Remote user name
+
+**Task**
+Task'lar sırayla çalıştırılır. Tüm bilgisayarlar aynı anda aynı task direktiflerini alır. Bir task bitmeden diğerine geçilmez.
+Temel olarak bir task'ın görevi, bir module'ü gerekli argumanlarla çalıştırmaktır.
+Tüm task'ların bir ismi olmak zorundadır. Task'ın ne yaptığına dair açıklayıcı bir tanım olabilir. Playbook çalıştırılırken bunları output olarak görürüz.
