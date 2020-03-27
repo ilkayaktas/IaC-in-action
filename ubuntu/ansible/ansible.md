@@ -1,3 +1,4 @@
+**ANSIBLE**
 Ansible inventory dosyası içinde IP ya da domain name olabilir. Bunlara ek olarak alias, tek bir host için tanımlanmış host variable ya da birçok host için tanımlanmış group varaiables olabilir. Birden fazla ansible dosyası oluşturulabilir. Bu dosyalar -i parametresi ile komuta verilir. Ayrıca çeşitli scriptlerle dinamik olarak da inventory hostları kullanılabilir.
 
 Ansible remote makinelere ssh protokolü ile bağlanır. Ansible native OpenSSH kullnaır.
