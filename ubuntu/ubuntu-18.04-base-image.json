@@ -45,8 +45,20 @@
       "format": "ova",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
-      "memory": "{{ user `memory` }}",
-      "cpus": "{{ user `cpus` }}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
+        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
+        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"],
+        ["hostonlyif", "create"],
+        ["hostonlyif", "ipconfig", "{{user `network_interface_name`}}", "--ip", "{{user `network_interface_ip`}}"],
+        ["dhcpserver", "add", "--ifname", "{{user `network_interface_name`}}", "--ip", "{{user `network_dhcp_server_ip`}}",
+          "--netmask", "{{user `network_dhcp_netmask`}}", "--lowerip", "{{user `network_dhcp_lower_ip`}}", "--upperip", "{{user `network_dhcp_upper_ip`}}"
+        ],
+        ["dhcpserver", "modify", "--ifname", "{{user `network_interface_name`}}","--enable"],
+        ["modifyvm", "{{.Name}}", "--nic1", "hostonly"],
+        ["modifyvm", "{{.Name}}", "--hostonlyadapter1", "{{user `network_interface_name`}}"],
+        ["modifyvm", "{{.Name}}", "--nic2", "nat"]
+      ],
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}"
     }
@@ -91,6 +103,7 @@
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "cpus": "1",
     "disk_size": "65536",
+    "vram": "16",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",   
@@ -102,6 +115,12 @@
     "mirror": "http://cdimage.ubuntu.com",
     "mirror_directory": "ubuntu/releases/18.04.4/release",
     "name": "ubuntu-18.04",
+    "network_dhcp_lower_ip": "192.168.56.101",
+    "network_dhcp_netmask": "255.255.255.0",
+    "network_dhcp_server_ip": "192.168.56.100",
+    "network_dhcp_upper_ip": "192.168.56.200",
+    "network_interface_ip": "192.168.56.1",
+    "network_interface_name": "vboxnet0",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed.cfg",
     "template": "ubuntu-18.04-base-image",

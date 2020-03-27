@@ -1,0 +1,16 @@
+# ansible-playbook playboooks/04_configure_hosts_for_k8s.yml
+---
+- hosts: kubernetes-cluster
+  vars_files:
+    - ../vars/config.yml
+  tasks:
+    - name: Create VMs
+      include_tasks: ../tasks/create-vm.yml
+      loop: "{{ kubernetes_machines }}"
+   # - name: Create Dynamic Inventory with vbox.py
+   #   shell: inventory/vbox.py
+   #   register: dynamic_inventory
+   # - name: output of variable
+   #   debug:
+   #     msg: "{{ dynamic_inventory }}"
+...

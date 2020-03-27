@@ -1,0 +1,29 @@
+---
+- name: Reset {{ item }} VM's DHCP Settings
+  delegate_to: "{{ item }}"
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: '^BOOTPROTO='
+    line: 'BOOTPROTO=none'
+- name: Get {{ item }} VM's IP
+  delegate_to: "{{ item }}"
+  shell: hostname -I | awk '{print $1}'
+  register: ip_addr
+- name: Set {{ item }} VM's IP as static
+  delegate_to: "{{ item }}"
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: '^IPADDR='
+    line: "IPADDR={{ ip_addr.stdout }}"
+- name: Set {{ item }} VM's NETMASK
+  delegate_to: "{{ item }}"
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: '^NETMASK='
+    line: "NETMASK=255.255.255.0"
+- name: Restart {{ item }} VM's network
+  delegate_to: "{{ item }}"
+  service:
+    name: network
+    state: restarted
+...
