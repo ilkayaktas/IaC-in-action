@@ -20,9 +20,10 @@
         " locale=en_US.UTF-8<wait>",
         " netcfg/get_domain=vm<wait>",
         " netcfg/get_hostname=vagrant<wait>",
+        " netcfg/choose_interface=enp0s8", 
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{user `network_interface_ip`}}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
@@ -40,8 +41,10 @@
       "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-virtualbox",
       "shutdown_command": "echo 'iaktas' | sudo -S shutdown -P now",
       "ssh_password": "iaktas",
-      "ssh_port": 22,
       "ssh_username": "iaktas",
+      "ssh_host": "127.0.0.1",
+      "ssh_port": 2222,
+      "ssh_skip_nat_mapping": "true",
       "format": "ova",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
@@ -57,7 +60,10 @@
         ["dhcpserver", "modify", "--ifname", "{{user `network_interface_name`}}","--enable"],
         ["modifyvm", "{{.Name}}", "--nic1", "hostonly"],
         ["modifyvm", "{{.Name}}", "--hostonlyadapter1", "{{user `network_interface_name`}}"],
-        ["modifyvm", "{{.Name}}", "--nic2", "nat"]
+        ["modifyvm", "{{.Name}}", "--nic2", "nat"],
+        ["modifyvm", "{{.Name}}", "--natpf2","guestssh,tcp,,2222,,22"],
+        ["modifyvm", "{{.Name}}", "--natpf2","guest80,tcp,,80,,80"],
+        ["modifyvm", "{{.Name}}", "--natpf2","guest8080,tcp,,8080,,8080"]
       ],
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}"
