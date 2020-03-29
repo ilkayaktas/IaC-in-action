@@ -6,6 +6,7 @@ kubernetes_machines:
    - kubernetes-node3
    - kubernetes-node4
 ova_path: /Users/ilkayaktas/Workspace/CloudProjects/packer-in-action/ubuntu/builds/packer-ubuntu-18.04-base-image-virtualbox/ubuntu-18.04-base-image.ova
-disk_base_dir: '/Users/ilkayaktas/VirtualBox\ VMs/{{ item }}'
+disk_base_dir: '/Users/ilkayaktas/VirtualBox\ VMs/{{ item.name }}'
 vm_ssh_password: iaktas
+os_gateway: 192.168.56.1
 ...

@@ -6,7 +6,13 @@
   tasks:
     - name: Create VMs
       include_tasks: ../tasks/create-vm.yml
-      loop: "{{ kubernetes_machines }}"
+   #   loop: "{{ kubernetes_machines }}"
+      loop: 
+        - { name: 'kubernetes-master', ip: '192.168.56.101' }
+        - { name: 'kubernetes-node1', ip: '192.168.56.102' }
+        - { name: 'kubernetes-node2', ip: '192.168.56.103' }
+        - { name: 'kubernetes-node3', ip: '192.168.56.104' }
+        - { name: 'kubernetes-node4', ip: '192.168.56.105' }
    # - name: Create Dynamic Inventory with vbox.py
    #   shell: inventory/vbox.py
    #   register: dynamic_inventory

@@ -1,0 +1,29 @@
+---
+- name: Calico-rr | Pre-upgrade tasks
+  include_tasks: pre.yml
+
+- name: Calico-rr | Fetch current node object
+  command: "{{ bin_dir }}/calicoctl.sh get node {{ inventory_hostname }} -oyaml"
+  register: calico_rr_node
+
+# FIXME(mattymo): Use jsonpatch when ansible/ansible#52931 is merged
+- name: Calico-rr | Set route reflector cluster ID
+  shell: >-
+    echo -e '{{ calico_rr_node.stdout }}' |
+    sed '/bgp:/a \ \ \ \ routeReflectorClusterID: {{ cluster_id }}'
+  register: calico_rr_node
+  when: '("routeReflectorClusterID: " + cluster_id|string) not in calico_rr_node.stdout_lines'
+
+- name: Calico-rr | Configure route reflector
+  shell: |-
+    echo -e '{{ calico_rr_node.stdout }}' |
+    {{ bin_dir }}/calicoctl.sh replace -f-
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"
+
+- name: Calico-rr | Set label for route reflector
+  command: >-
+    {{ bin_dir }}/calicoctl.sh label node {{ inventory_hostname }}
+    'i-am-a-route-reflector=true' --overwrite
+  retries: 4
+  delay: "{{ retry_stagger | random + 3 }}"

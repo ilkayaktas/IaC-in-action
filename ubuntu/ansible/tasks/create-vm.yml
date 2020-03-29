@@ -1,25 +1,27 @@
 ---
-- name: Import Base Ubuntu Image
-  command: VBoxManage import {{ ova_path }} --vsys 0 --vmname {{ item }} --unit 11 --disk {{ disk_base_dir }}/{{ item }}.vmdk
-- name: Run {{ item }} VM
-  command: VBoxManage startvm {{ item }}
-- name: Wait {{ item }} VM's IP
-  command: VBoxManage guestproperty wait {{ item }} "/VirtualBox/GuestInfo/Net/0/V4/IP"
-- name: Get {{ item }} VM's IP
-  shell: VBoxManage guestproperty get {{ item }} "/VirtualBox/GuestInfo/Net/0/V4/IP" | cut -d ' ' -f2
+- name: Import Base Ubuntu Image {{item.name}}
+  command: VBoxManage import {{ ova_path }} --vsys 0 --vmname {{ item.name }} --unit 11 --disk {{ disk_base_dir }}/{{ item.name }}.vmdk
+- name: Run {{ item.name }} VM
+  command: VBoxManage startvm {{ item.name }}
+- name: Wait {{ item.name }} VM's IP
+  command: VBoxManage guestproperty wait {{ item.name }} "/VirtualBox/GuestInfo/Net/0/V4/IP"
+- name: Get {{ item.name }} VM's IP
+  shell: VBoxManage guestproperty get {{ item.name }} "/VirtualBox/GuestInfo/Net/0/V4/IP" | cut -d ' ' -f2
   register: vm_ip
-- name: Print {{ item }} VM IP
+- name: Print {{ item.name }} VM IP
   debug:
-    msg: "{{ item }} = '{{ vm_ip.stdout}}'"
-- name: Wait {{ item }}'s SSH port
+    msg: "{{ item.name }} = '{{ vm_ip.stdout}}'"
+- name: Wait {{ item.name }}'s SSH port
   wait_for:
     port: 22
     host: "{{ vm_ip.stdout }}"
-- name: Add {{ item }} VM to [kubernetes-nodes] groups in inventory
+- name: Add {{ item.name }} VM to [kubernetes-nodes] groups in inventory
   add_host:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
     groups: "kubernetes-nodes"
     ansible_host: "{{ vm_ip.stdout }}"
     ansible_user: iaktas
     ansible_ssh_pass: "{{ vm_ssh_password }}"
+- name: Set Static IP for {{ item }} VM 
+  include_tasks: set-static-ip.yml
 ...
