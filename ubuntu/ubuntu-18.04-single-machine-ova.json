@@ -19,7 +19,7 @@
         " keyboard-configuration/variant=USA<wait>",
         " locale=en_US.UTF-8<wait>",
         " netcfg/get_domain=vm<wait>",
-        " netcfg/get_hostname=vagrant<wait>",
+        " netcfg/get_hostname=master.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
@@ -37,18 +37,21 @@
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
-      "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-virtualbox",
+      "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-master",
       "shutdown_command": "echo 'iaktas' | sudo -S shutdown -P now",
       "ssh_password": "iaktas",
       "ssh_port": 22,
       "ssh_username": "iaktas",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
+      "format": "ova",
       "memory": "{{ user `memory` }}",
       "cpus": "{{ user `cpus` }}",
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "{{ user `template` }}"
+      "vm_name": "{{ user `template` }}-master",
+      "name":"{{ user `template` }}-master"
     }
+
   ],
   "provisioners": [
     {
@@ -64,17 +67,18 @@
         "{{template_dir}}/scripts/sshd.sh",
         "{{template_dir}}/scripts/sudoers-v2.sh",
         "{{template_dir}}/scripts/virtualbox-v2.sh",
-        "{{template_dir}}/scripts/k8s-install.sh"
+        "{{template_dir}}/scripts/vagrant.sh",
+        "{{template_dir}}/scripts/custom-script.sh"
       ],
       "type": "shell"
     }
   ],
   "variables": {
-    "box_basename": "ubuntu-18.04-v0-ovf",
+    "box_basename": "ubuntu-18.04-single-machine-ova",
     "build_directory": "./builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
-    "cpus": "1",
+    "cpus": "2",
     "disk_size": "65536",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
@@ -91,8 +95,8 @@
     "mirror_directory": "ubuntu/releases/18.04.4/release",
     "name": "ubuntu-18.04",
     "no_proxy": "{{env `no_proxy`}}",
-    "preseed_path": "preseed-v2.cfg",
-    "template": "ubuntu-18.04-amd64-v0-ovf",
+    "preseed_path": "preseed.cfg",
+    "template": "ubuntu-18.04-single-machine-ova",
     "version": "TIMESTAMP"
   }
 }
