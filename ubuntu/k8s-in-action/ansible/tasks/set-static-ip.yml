@@ -20,6 +20,20 @@
     path: /etc/netplan/01-netcfg.yaml
     insertbefore: EOF
     line: '      gateway4: {{ os_gateway }}'
+- name: Add dns {{ item.name }}
+  become: true
+  delegate_to: "{{ item.name }}"
+  lineinfile:
+    path: /etc/netplan/01-netcfg.yaml
+    insertbefore: EOF
+    line: '      nameservers:'
+- name: Add dns {{ item.name }}
+  become: true
+  delegate_to: "{{ item.name }}"
+  lineinfile:
+    path: /etc/netplan/01-netcfg.yaml
+    insertbefore: EOF
+    line: '         addresses: [8.8.4.4, 8.8.8.8]'
 - name: Apply netplan {{ item.name }}
   become: true
   delegate_to: "{{ item.name }}"
