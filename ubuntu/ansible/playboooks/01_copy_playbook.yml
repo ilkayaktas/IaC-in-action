@@ -1,0 +1,17 @@
+# ansible-playbook playboooks/01_copy_playbook.yml -u iaktas
+---
+- hosts: kubernetes-cluster
+  vars_files:
+    - ../vars/config.yml
+  tasks:
+    - name: Copy files from yml 
+      include_tasks: ../tasks/copy-file.yml
+    - name: Copy files from task
+      copy:
+        src: ../files/something.txt
+        dest: /home/iaktas/something1.conf
+        owner: iaktas
+        group: iaktas
+        mode: '0644'  
+...
+

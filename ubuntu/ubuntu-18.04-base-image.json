@@ -42,6 +42,7 @@
       "ssh_password": "iaktas",
       "ssh_port": 22,
       "ssh_username": "iaktas",
+      "format": "ova",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
       "memory": "{{ user `memory` }}",
@@ -61,11 +62,17 @@
       "execute_command": "echo 'iaktas' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "expect_disconnect": true,
       "scripts": [
+        "{{template_dir}}/scripts/update.sh",
+        "{{template_dir}}/scripts/motd.sh",
         "{{template_dir}}/scripts/sshd.sh",
+        "{{template_dir}}/scripts/networking.sh",
         "{{template_dir}}/scripts/sudoers-v2.sh",
-        "{{template_dir}}/scripts/virtualbox-v2.sh",
         "{{template_dir}}/scripts/vagrant.sh",
-        "{{template_dir}}/scripts/custom-script.sh"
+        "{{template_dir}}/scripts/virtualbox-v2.sh",
+        "{{template_dir}}/scripts/parallels.sh",
+        "{{template_dir}}/scripts/cleanup.sh",
+        "{{template_dir}}/scripts/minimize.sh",
+        "{{template_dir}}/scripts/additional-packages.sh"
       ],
       "type": "shell"
     }
@@ -73,11 +80,12 @@
   "post-processors": [
     {
       "output": "{{ user `build_directory` }}/{{user `box_basename`}}.{{.Provider}}.box",
-      "type": "vagrant"
+      "type": "vagrant",
+      "keep_input_artifact": true
     }
   ],
   "variables": {
-    "box_basename": "ubuntu-18.04-single-machine-box",
+    "box_basename": "ubuntu-18.04-base-image",
     "build_directory": "./builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
@@ -99,7 +107,7 @@
     "name": "ubuntu-18.04",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed.cfg",
-    "template": "ubuntu-18.04-single-machine-box",
+    "template": "ubuntu-18.04-base-image",
     "version": "TIMESTAMP"
   }
 }
