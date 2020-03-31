@@ -22,7 +22,7 @@
         " netcfg/get_hostname=master.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/master/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
@@ -45,20 +45,8 @@
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
       "format": "ova",
-      "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
-        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"],
-        ["hostonlyif", "create"],
-        ["hostonlyif", "ipconfig", "{{user `network_interface_name`}}", "--ip", "{{user `network_interface_ip`}}"],
-        ["dhcpserver", "add", "--ifname", "{{user `network_interface_name`}}", "--ip", "{{user `network_dhcp_server_ip`}}",
-          "--netmask", "{{user `network_dhcp_netmask`}}", "--lowerip", "{{user `network_dhcp_lower_ip`}}", "--upperip", "{{user `network_dhcp_upper_ip`}}"
-        ],
-        ["dhcpserver", "modify", "--ifname", "{{user `network_interface_name`}}","--enable"],
-        ["modifyvm", "{{.Name}}", "--nic1", "hostonly"],
-        ["modifyvm", "{{.Name}}", "--hostonlyadapter1", "{{user `network_interface_name`}}"],
-        ["modifyvm", "{{.Name}}", "--nic2", "nat"]
-      ],
+      "memory": "{{ user `memory` }}",
+      "cpus": "{{ user `cpus` }}",
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}-master",
       "name":"{{ user `template` }}-master"
@@ -85,7 +73,7 @@
         " netcfg/get_hostname=node1.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/node1/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
@@ -108,11 +96,8 @@
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
       "format": "ova",
-      "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
-        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"]
-      ],
+      "memory": "{{ user `memory` }}",
+      "cpus": "{{ user `cpus` }}",
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}-node1",
       "name":"{{ user `template` }}-node1"
@@ -139,7 +124,7 @@
         " netcfg/get_hostname=node2.k8s<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
-        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/node2/{{user `preseed_path`}}<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
         " -- <wait>",
         "<enter><wait>"
       ],
@@ -162,11 +147,8 @@
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
       "format": "ova",
-      "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
-        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"]
-      ],
+      "memory": "{{ user `memory` }}",
+      "cpus": "{{ user `cpus` }}",
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}-node2",
       "name":"{{ user `template` }}-node2"
@@ -188,18 +170,17 @@
         "{{template_dir}}/scripts/sudoers-v2.sh",
         "{{template_dir}}/scripts/virtualbox-v2.sh",
         "{{template_dir}}/scripts/vagrant.sh",
-        "{{template_dir}}/scripts/k8s-install.sh"
+        "{{template_dir}}/scripts/custom-script.sh"
       ],
       "type": "shell"
     }
   ],
   "variables": {
-    "box_basename": "ubuntu-18.04-kubernetes",
+    "box_basename": "ubuntu-18.04-multi-machine",
     "build_directory": "./builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "cpus": "2",
-    "vram": "16",
     "disk_size": "65536",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
@@ -217,14 +198,7 @@
     "name": "ubuntu-18.04",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed.cfg",
-    "template": "ubuntu-18.04-kubernetes",
-    "version": "TIMESTAMP",
-    "network_dhcp_lower_ip": "192.168.56.101",
-    "network_dhcp_netmask": "255.255.255.0",
-    "network_dhcp_server_ip": "192.168.56.100",
-    "network_dhcp_upper_ip": "192.168.56.200",
-    "network_interface_ip": "192.168.56.1",
-    "network_interface_name": "vboxnet0"
-
+    "template": "ubuntu-18.04-multi-machine",
+    "version": "TIMESTAMP"
   }
 }
