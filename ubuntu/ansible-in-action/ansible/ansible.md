@@ -7,6 +7,7 @@ Bu aslında şu demektir: ssh key kullanarak uzak makinelere parola sormadan ba�
 
     ssh-keygen -t rsa
     ssh-copy-id -i ~/.ssh/<public_key_file> <user>@<remote machine> 
+    ssh-add
 İhtiyaç halinde farklı kullanıcı isimleriyle de bağlantı sağlanabilir: -u parametresi ile, inventory doyasına bu bilgi eklenerek, konfigürasyon dosyasına eklenerek ya da environemnt variable olarak eklenebilir.
 
 Ansible proje yapısı oluşturulduktan sonra (ansible.cfg, inventory.ini) şu komutla ilk denemeler yapılabilir.
@@ -256,6 +257,7 @@ Ansible ile deneme yapmadan önce bu makineye terminalden ping atarak bağlantı
 
     ssh-keygen -t rsa // generate ssh key
     ssh-copy-id -i ~/.ssh/<public_key_file> <user>@<remote machine> // copy public ssh key to target machine
+    ssh-add
 
 **Ping via Ansible**
 
