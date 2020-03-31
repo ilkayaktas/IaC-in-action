@@ -1,1 +1,3 @@
 ubuntu/builds/
+*.iml
+.idea
