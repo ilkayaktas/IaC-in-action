@@ -358,7 +358,7 @@ Yukarıdaki gibi bir kullanımı vardır. Loop'a parametre olarak variables'ta o
 
     loop: "{{ somelist }}"
 
-Looping ober inventory
+Looping over inventory
 
     # show all the hosts in the inventory
     - debug:

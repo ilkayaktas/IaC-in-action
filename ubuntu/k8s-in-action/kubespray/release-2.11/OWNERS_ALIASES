@@ -1,0 +1,21 @@
+aliases:
+  kubespray-approvers:
+    - ant31
+    - mattymo
+    - atoms
+    - chadswen
+    - rsmitty
+    - bogdando
+    - bradbeam
+    - woopstar
+    - riverzhang
+    - holser
+    - smana
+    - verwilst
+    - miouge1
+  kubespray-reviewers:
+    - jjungnickel
+    - archifleks
+    - chapsuk
+    - mirwan
+    - holmsten

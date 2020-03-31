@@ -1,0 +1,27 @@
+---
+- name: Reset {{ item }} VM's DHCP Settings
+  become: true
+  delegate_to: "{{ item.name }}"
+  lineinfile:
+    path: /etc/netplan/01-netcfg.yaml
+    regexp: '      dhcp4: true'
+    line: '      dhcp4: false'   
+- name: Add static ip {{ item.ip }}
+  become: true
+  delegate_to: "{{ item.name }}"
+  lineinfile:
+    path: /etc/netplan/01-netcfg.yaml
+    insertbefore: EOF
+    line: '      addresses: [{{ item.ip }}/24]'
+- name: Add gateway {{ item.name }}
+  become: true
+  delegate_to: "{{ item.name }}"
+  lineinfile:
+    path: /etc/netplan/01-netcfg.yaml
+    insertbefore: EOF
+    line: '      gateway4: {{ os_gateway }}'
+- name: Apply netplan {{ item.name }}
+  become: true
+  delegate_to: "{{ item.name }}"
+  shell: sudo netplan apply
+...
