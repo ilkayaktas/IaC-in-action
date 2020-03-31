@@ -2,5 +2,7 @@ ubuntu/builds/
 *.retry
 ubuntu/ansible-in-action/ansible/*.retry
 ubuntu/ansible-in-action/ansible/playbooks/*.retry
+ubuntu/k8s-in-action/ansible/*.retry
+ubuntu/k8s-in-action/ansible/playbooks/*.retry
 *.iml
 .idea
