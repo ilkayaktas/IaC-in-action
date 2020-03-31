@@ -1,3 +1,5 @@
 ubuntu/builds/
 ubuntu/ansible/*.retry
 ubuntu/ansible/playbooks/*.retry
+*.iml
+.idea
