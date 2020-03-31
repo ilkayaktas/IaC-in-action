@@ -1,0 +1,9 @@
+---
+- name: Copy file with owner and permissions
+  copy:
+    src: ../files/something.txt
+    dest: /home/iaktas/something.conf
+    owner: iaktas
+    group: iaktas
+    mode: '0644'
+...
