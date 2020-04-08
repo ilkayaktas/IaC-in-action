@@ -3,14 +3,12 @@ kind: DaemonSet
 metadata:
   labels:
     k8s-app: cilium
-    kubernetes.io/cluster-service: "true"
   name: cilium
   namespace: kube-system
 spec:
   selector:
     matchLabels:
       k8s-app: cilium
-      kubernetes.io/cluster-service: "true"
   template:
     metadata:
       annotations:
@@ -26,7 +24,6 @@ spec:
         scheduler.alpha.kubernetes.io/tolerations: '[{"key":"dedicated","operator":"Equal","value":"master","effect":"NoSchedule"}]'
       labels:
         k8s-app: cilium
-        kubernetes.io/cluster-service: "true"
     spec:
       containers:
       - args:
@@ -119,9 +116,9 @@ spec:
           name: docker-socket
           readOnly: true
 {% else %}
-            - name: "{{ container_manager }}-socket"
-              mountPath: {{ cri_socket }}
-              readOnly: true
+        - name: "{{ container_manager }}-socket"
+          mountPath: {{ cri_socket }}
+          readOnly: true
 {% endif %}
         - mountPath: /var/lib/etcd-config
           name: etcd-config-path

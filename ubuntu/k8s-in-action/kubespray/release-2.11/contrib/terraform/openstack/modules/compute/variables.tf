@@ -1,7 +1,11 @@
 variable "cluster_name" {}
 
 variable "az_list" {
-  type = "list"
+  type = list(string)
+}
+
+variable "az_list_node" {
+  type = list(string)
 }
 
 variable "number_of_k8s_masters" {}
@@ -21,6 +25,16 @@ variable "number_of_k8s_nodes_no_floating_ip" {}
 variable "number_of_bastions" {}
 
 variable "number_of_gfs_nodes_no_floating_ip" {}
+
+variable "bastion_root_volume_size_in_gb" {}
+
+variable "etcd_root_volume_size_in_gb" {}
+
+variable "master_root_volume_size_in_gb" {}
+
+variable "node_root_volume_size_in_gb" {}
+
+variable "gfs_root_volume_size_in_gb" {}
 
 variable "gfs_volume_size_in_gb" {}
 
@@ -94,4 +108,10 @@ variable "supplementary_node_groups" {
 
 variable "worker_allowed_ports" {
   type = "list"
+}
+
+variable "use_access_ip" {}
+
+variable "use_server_groups" {
+  type = bool
 }

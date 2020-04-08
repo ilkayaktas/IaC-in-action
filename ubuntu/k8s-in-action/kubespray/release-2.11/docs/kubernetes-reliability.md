@@ -12,21 +12,21 @@ By default the normal behavior looks like:
 1. Kubelet updates it status to apiserver periodically, as specified by
    `--node-status-update-frequency`. The default value is **10s**.
 
-2. Kubernetes controller manager checks the statuses of Kubelets every
+2. Kubernetes controller manager checks the statuses of Kubelet every
    `–-node-monitor-period`. The default value is **5s**.
 
 3. In case the status is updated within `--node-monitor-grace-period` of time,
    Kubernetes controller manager considers healthy status of Kubelet. The
    default value is **40s**.
 
-> Kubernetes controller manager and Kubelets work asynchronously. It means that
+> Kubernetes controller manager and Kubelet work asynchronously. It means that
 > the delay may include any network latency, API Server latency, etcd latency,
 > latency caused by load on one's master nodes and so on. So if
 > `--node-status-update-frequency` is set to 5s in reality it may appear in
 > etcd in 6-7 seconds or even longer when etcd cannot commit data to quorum
 > nodes.
 
-# Failure
+## Failure
 
 Kubelet will try to make `nodeStatusUpdateRetry` post attempts. Currently
 `nodeStatusUpdateRetry` is constantly set to 5 in
@@ -50,7 +50,7 @@ Kube proxy has a watcher over API. Once pods are evicted, Kube proxy will
 notice and will update iptables of the node. It will remove endpoints from
 services so pods from failed node won't be accessible anymore.
 
-# Recommendations for different cases
+## Recommendations for different cases
 
 ## Fast Update and Fast Reaction
 

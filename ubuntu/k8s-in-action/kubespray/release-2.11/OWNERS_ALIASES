@@ -4,18 +4,14 @@ aliases:
     - mattymo
     - atoms
     - chadswen
-    - rsmitty
-    - bogdando
-    - bradbeam
-    - woopstar
-    - riverzhang
-    - holser
-    - smana
-    - verwilst
+    - mirwan
     - miouge1
+    - riverzhang
+    - verwilst
+    - woopstar
+    - luckysb
   kubespray-reviewers:
     - jjungnickel
     - archifleks
-    - chapsuk
-    - mirwan
     - holmsten
+    - bozzo

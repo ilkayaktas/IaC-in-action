@@ -5,12 +5,14 @@ provider "openstack" {
 module "network" {
   source = "./modules/network"
 
-  external_net    = "${var.external_net}"
-  network_name    = "${var.network_name}"
-  subnet_cidr     = "${var.subnet_cidr}"
-  cluster_name    = "${var.cluster_name}"
-  dns_nameservers = "${var.dns_nameservers}"
-  use_neutron     = "${var.use_neutron}"
+  external_net       = "${var.external_net}"
+  network_name       = "${var.network_name}"
+  subnet_cidr        = "${var.subnet_cidr}"
+  cluster_name       = "${var.cluster_name}"
+  dns_nameservers    = "${var.dns_nameservers}"
+  network_dns_domain = "${var.network_dns_domain}"
+  use_neutron        = "${var.use_neutron}"
+  router_id          = "${var.router_id}"
 }
 
 module "ips" {
@@ -31,6 +33,7 @@ module "compute" {
 
   cluster_name                                 = "${var.cluster_name}"
   az_list                                      = "${var.az_list}"
+  az_list_node                                 = "${var.az_list_node}"
   number_of_k8s_masters                        = "${var.number_of_k8s_masters}"
   number_of_k8s_masters_no_etcd                = "${var.number_of_k8s_masters_no_etcd}"
   number_of_etcd                               = "${var.number_of_etcd}"
@@ -40,6 +43,11 @@ module "compute" {
   number_of_bastions                           = "${var.number_of_bastions}"
   number_of_k8s_nodes_no_floating_ip           = "${var.number_of_k8s_nodes_no_floating_ip}"
   number_of_gfs_nodes_no_floating_ip           = "${var.number_of_gfs_nodes_no_floating_ip}"
+  bastion_root_volume_size_in_gb               = "${var.bastion_root_volume_size_in_gb}"
+  etcd_root_volume_size_in_gb                  = "${var.etcd_root_volume_size_in_gb}"
+  master_root_volume_size_in_gb                = "${var.master_root_volume_size_in_gb}"
+  node_root_volume_size_in_gb                  = "${var.node_root_volume_size_in_gb}"
+  gfs_root_volume_size_in_gb                   = "${var.gfs_root_volume_size_in_gb}"
   gfs_volume_size_in_gb                        = "${var.gfs_volume_size_in_gb}"
   public_key_path                              = "${var.public_key_path}"
   image                                        = "${var.image}"
@@ -64,6 +72,8 @@ module "compute" {
   supplementary_node_groups                    = "${var.supplementary_node_groups}"
   worker_allowed_ports                         = "${var.worker_allowed_ports}"
   wait_for_floatingip                          = "${var.wait_for_floatingip}"
+  use_access_ip                                = "${var.use_access_ip}"
+  use_server_groups                            = "${var.use_server_groups}"
 
   network_id = "${module.network.router_id}"
 }

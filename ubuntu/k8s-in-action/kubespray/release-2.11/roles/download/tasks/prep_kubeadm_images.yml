@@ -7,16 +7,6 @@
     - not skip_downloads | default(false)
     - downloads.kubeadm.enabled
 
-- name: prep_kubeadm_images | Sync kubeadm binary to nodes
-  include_tasks: "sync_file.yml"
-  vars:
-    download: "{{ download_defaults | combine(downloads.kubeadm) }}"
-  when:
-    - not skip_downloads | default(false)
-    - downloads.kubeadm.enabled
-    - download_run_once
-    - group_names | intersect(download.groups) | length
-
 - name: prep_kubeadm_images | Create kubeadm config
   template:
     src: "kubeadm-images.yaml.j2"
@@ -41,7 +31,7 @@
     state: file
 
 - name: prep_kubeadm_images | Generate list of required images
-  command: "{{ bin_dir }}/kubeadm config images list --config={{ kube_config_dir }}/kubeadm-images.yaml"
+  shell: "{{ bin_dir }}/kubeadm config images list --config={{ kube_config_dir }}/kubeadm-images.yaml | grep -v coredns"
   register: kubeadm_images_raw
   run_once: true
   changed_when: false

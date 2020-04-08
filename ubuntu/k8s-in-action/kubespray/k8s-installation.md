@@ -16,3 +16,14 @@ Ubuntu otomatik kurulumu yaparken ubuntu'ya yükleme sırasında kullanacağı n
     ["modifyvm", "{{.Name}}", "--natpf2","guest80,tcp,,80,,80"],
     ["modifyvm", "{{.Name}}", "--natpf2","guest8080,tcp,,8080,,8080"]
 
+
+sshpass tüm makinelerde kurulu olması gerekmektedir.
+ssh-copy-id -i ~/.ssh/id_rsa.pub iaktas@192.168.56.101
+
+Master ve node'lar için memory kontrolü yapıyor. Bu kaldırıldı.
+Tüm kurulum yapıldıktan sonra master'da aşağıdaki komutlar çalıştırılmadan önce şöyle bir hata alınıyordu:
+The connection to the server localhost:8080 was refused - did you specify the right host or port?  
+
+sudo cp /etc/kubernetes/admin.conf $HOME/
+sudo chown $(id -u):$(id -g) $HOME/admin.conf
+export KUBECONFIG=$HOME/admin.conf

@@ -3,8 +3,8 @@ resource "aws_security_group" "aws-elb" {
   vpc_id = "${var.aws_vpc_id}"
 
   tags = "${merge(var.default_tags, map(
-      "Name", "kubernetes-${var.aws_cluster_name}-securitygroup-elb"
-    ))}"
+    "Name", "kubernetes-${var.aws_cluster_name}-securitygroup-elb"
+  ))}"
 }
 
 resource "aws_security_group_rule" "aws-allow-api-access" {
@@ -28,7 +28,7 @@ resource "aws_security_group_rule" "aws-allow-api-egress" {
 # Create a new AWS ELB for K8S API
 resource "aws_elb" "aws-elb-api" {
   name            = "kubernetes-elb-${var.aws_cluster_name}"
-  subnets         = ["${var.aws_subnet_ids_public}"]
+  subnets         = var.aws_subnet_ids_public
   security_groups = ["${aws_security_group.aws-elb.id}"]
 
   listener {

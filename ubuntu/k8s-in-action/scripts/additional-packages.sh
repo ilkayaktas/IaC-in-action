@@ -18,3 +18,5 @@ sudo apt install htop
 echo 'y' | sudo apt install glances
 
 echo 'y' | sudo apt upgrade git
+
+sudo apt install sshpass

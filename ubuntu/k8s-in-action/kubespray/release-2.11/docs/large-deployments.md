@@ -3,7 +3,7 @@ Large deployments of K8s
 
 For a large scaled deployments, consider the following configuration changes:
 
-* Tune [ansible settings](http://docs.ansible.com/ansible/intro_configuration.html)
+* Tune [ansible settings](https://docs.ansible.com/ansible/intro_configuration.html)
   for `forks` and `timeout` vars to fit large numbers of nodes being deployed.
 
 * Override containers' `foo_image_repo` vars to point to intranet registry.
@@ -15,7 +15,7 @@ For a large scaled deployments, consider the following configuration changes:
   load on a delegate (the first K8s master node) then retrying failed
   push or download operations.
 
-* Tune parameters for DNS related applications 
+* Tune parameters for DNS related applications
   Those are ``dns_replicas``, ``dns_cpu_limit``,
   ``dns_cpu_requests``, ``dns_memory_limit``, ``dns_memory_requests``.
   Please note that limits must always be greater than or equal to requests.

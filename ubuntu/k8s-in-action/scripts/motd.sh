@@ -1,8 +1,8 @@
 #!/bin/sh -eux
 
 bento='
-This system is built by the Bento project by Chef Software
-More information can be found at https://github.com/chef/bento'
+This system is built by İlkay Aktaş
+More information can be found at https://github.com/ilkayaktas/IaC-in-action'
 
 if [ -d /etc/update-motd.d ]; then
     MOTD_CONFIG='/etc/update-motd.d/99-bento'

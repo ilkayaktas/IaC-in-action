@@ -1,6 +1,6 @@
 ---
 kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: calico-node
   namespace: kube-system
@@ -82,6 +82,9 @@ rules:
 {% endif %}
       - clusterinformations
       - hostendpoints
+{% if calico_version is version('v3.9.0', '>=') %}
+      - blockaffinities
+{% endif %}
     verbs:
       - get
       - list
@@ -103,7 +106,7 @@ rules:
       - get
       - list
       - watch
-  # These permissions are only requried for upgrade from v2.6, and can
+  # These permissions are only required for upgrade from v2.6, and can
   # be removed after upgrade or on fresh installations.
   - apiGroups: ["crd.projectcalico.org"]
     resources:

@@ -19,7 +19,7 @@
 
 - name: Install | Copy kubectl binary from download dir
   synchronize:
-    src: "{{ local_release_dir }}/hyperkube-{{ kube_version }}-{{ image_arch }}"
+    src: "{{ local_release_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
     dest: "{{ bin_dir }}/kubectl"
     compress: no
     perms: yes
@@ -28,7 +28,6 @@
   changed_when: false
   delegate_to: "{{ inventory_hostname }}"
   tags:
-    - hyperkube
     - kubectl
     - upgrade
 
@@ -38,7 +37,6 @@
     mode: "0755"
     state: file
   tags:
-    - hyperkube
     - kubectl
     - upgrade
 
@@ -63,7 +61,6 @@
 
 - name: Disable SecurityContextDeny admission-controller and enable PodSecurityPolicy
   set_fact:
-    kube_apiserver_admission_control: "{{ kube_apiserver_admission_control | default([]) | difference(['SecurityContextDeny']) | union(['PodSecurityPolicy']) | unique }}"
     kube_apiserver_enable_admission_plugins: "{{ kube_apiserver_enable_admission_plugins | difference(['SecurityContextDeny']) | union(['PodSecurityPolicy']) | unique }}"
   when: podsecuritypolicy_enabled
 
@@ -73,3 +70,6 @@
 - name: Include kubeadm etcd extra tasks
   include_tasks: kubeadm-etcd.yml
   when: etcd_kubeadm_enabled
+
+- name: Include kubeadm secondary server apiserver fixes
+  include_tasks: kubeadm-fix-apiserver.yml

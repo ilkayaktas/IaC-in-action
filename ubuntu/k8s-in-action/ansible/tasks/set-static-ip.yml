@@ -13,27 +13,24 @@
     path: /etc/netplan/01-netcfg.yaml
     insertbefore: EOF
     line: '      addresses: [{{ item.ip }}/24]'
-- name: Add gateway {{ item.name }}
+- name: Auto eth1
   become: true
   delegate_to: "{{ item.name }}"
   lineinfile:
-    path: /etc/netplan/01-netcfg.yaml
+    path: /etc/network/interfaces
     insertbefore: EOF
-    line: '      gateway4: {{ os_gateway }}'
-- name: Add dns {{ item.name }}
+    line: 'auto eth1'
+- name: Set dhcp for eth1
   become: true
   delegate_to: "{{ item.name }}"
   lineinfile:
-    path: /etc/netplan/01-netcfg.yaml
+    path: /etc/network/interfaces
     insertbefore: EOF
-    line: '      nameservers:'
-- name: Add dns {{ item.name }}
+    line: 'iface eth1 inet dhcp'
+- name: Restart network
   become: true
   delegate_to: "{{ item.name }}"
-  lineinfile:
-    path: /etc/netplan/01-netcfg.yaml
-    insertbefore: EOF
-    line: '         addresses: [8.8.4.4, 8.8.8.8]'
+  shell: sudo /etc/init.d/networking restart
 - name: Apply netplan {{ item.name }}
   become: true
   delegate_to: "{{ item.name }}"

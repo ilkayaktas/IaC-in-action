@@ -3,11 +3,11 @@
 * [Getting started](/docs/getting-started.md)
 * [Ansible](docs/ansible.md)
 * [Variables](/docs/vars.md)
-* [Ansible](/docs/ansible.md)
 * Operations
   * [Integration](docs/integration.md)
   * [Upgrades](/docs/upgrades.md)
   * [HA Mode](docs/ha-mode.md)
+  * [Adding/replacing a node](docs/nodes.md)
   * [Large deployments](docs/large-deployments.md)
 * CNI
   * [Calico](docs/calico.md)
@@ -23,9 +23,9 @@
   * [Packet](/docs/packet.md)
   * [vSphere](/docs/vsphere.md)
 * Operating Systems
-  * [Atomic](docs/atomic.md)
   * [Debian](docs/debian.md)
   * [Coreos](docs/coreos.md)
+  * [Fedora CoreOS](docs/fcos.md)  
   * [OpenSUSE](docs/opensuse.md)
 * Advanced
   * [Proxy](/docs/proxy.md)
@@ -37,4 +37,5 @@
 * Developers
   * [Test cases](docs/test_cases.md)
   * [Vagrant](docs/vagrant.md)
+  * [CI Matrix](docs/ci.md)
 * [Roadmap](docs/roadmap.md)

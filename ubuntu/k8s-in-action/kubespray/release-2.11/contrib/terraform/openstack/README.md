@@ -38,6 +38,16 @@ hosts where that makes sense. You have the option of creating bastion hosts
 inside the private subnet to access the nodes there.  Alternatively, a node with
 a floating IP can be used as a jump host to nodes without.
 
+#### Using an existing router
+It is possible to use an existing router instead of creating one. To use an
+existing router set the router\_id variable to the uuid of the router you wish
+to use.
+
+For example:
+```
+router_id = "00c542e7-6f46-4535-ae95-984c7f0391a3"
+```
+
 ### Kubernetes Nodes
 You can create many different kubernetes topologies by setting the number of
 different classes of hosts. For each class there are options for allocating
@@ -224,7 +234,9 @@ For your cluster, edit `inventory/$CLUSTER/cluster.tfvars`.
 |Variable | Description |
 |---------|-------------|
 |`cluster_name` | All OpenStack resources will use the Terraform variable`cluster_name` (default`example`) in their name to make it easier to track. For example the first compute resource will be named`example-kubernetes-1`. |
+|`az_list` | List of Availability Zones available in your OpenStack cluster. |
 |`network_name` | The name to be given to the internal network that will be generated |
+|`network_dns_domain` | (Optional) The dns_domain for the internal network that will be generated |
 |`dns_nameservers`| An array of DNS name server names to be used by hosts in the internal subnet. |
 |`floatingip_pool` | Name of the pool from which floating IPs will be allocated |
 |`external_net` | UUID of the external network that will be routed to |
@@ -246,6 +258,12 @@ For your cluster, edit `inventory/$CLUSTER/cluster.tfvars`.
 |`k8s_allowed_remote_ips` | List of CIDR allowed to initiate a SSH connection, empty by default |
 |`worker_allowed_ports` | List of ports to open on worker nodes, `[{ "protocol" = "tcp", "port_range_min" = 30000, "port_range_max" = 32767, "remote_ip_prefix" = "0.0.0.0/0"}]` by default |
 |`wait_for_floatingip` | Let Terraform poll the instance until the floating IP has been associated, `false` by default. |
+|`node_root_volume_size_in_gb` | Size of the root volume for nodes, 0 to use ephemeral storage |
+|`master_root_volume_size_in_gb` | Size of the root volume for masters, 0 to use ephemeral storage |
+|`gfs_root_volume_size_in_gb` | Size of the root volume for gluster, 0 to use ephemeral storage |
+|`etcd_root_volume_size_in_gb` | Size of the root volume for etcd nodes, 0 to use ephemeral storage |
+|`bastion_root_volume_size_in_gb` | Size of the root volume for bastions, 0 to use ephemeral storage |
+|`use_server_group` | Create and use openstack nova servergroups, default: false |
 
 #### Terraform state files
 
@@ -419,7 +437,10 @@ resolvconf_mode: host_resolvconf
 ```
 node_volume_attach_limit: 26
 ```
-
+- Disable access_ip, this will make all innternal cluster traffic to be sent over local network when a floating IP is attached (default this value is set to 1)
+```
+use_access_ip: 0
+```
 
 ### Deploy Kubernetes
 

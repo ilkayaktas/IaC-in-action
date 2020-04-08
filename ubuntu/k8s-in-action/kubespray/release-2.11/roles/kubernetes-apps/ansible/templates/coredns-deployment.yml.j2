@@ -1,12 +1,11 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "coredns{{ coredns_ordinal_suffix }}"
   namespace: kube-system
   labels:
     k8s-app: "kube-dns{{ coredns_ordinal_suffix }}"
-    kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
     kubernetes.io/name: "coredns{{ coredns_ordinal_suffix }}"
 spec:
@@ -34,6 +33,9 @@ spec:
           effect: NoSchedule
         - key: "CriticalAddonsOnly"
           operator: "Exists"
+{% if dns_extra_tolerations | default(None) %}
+        {{ dns_extra_tolerations | list | to_nice_yaml(indent=2) | indent(8) }}
+{% endif %}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
