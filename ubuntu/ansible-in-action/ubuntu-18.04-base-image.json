@@ -103,7 +103,7 @@
     }
   ],
   "variables": {
-    "box_basename": "ubuntu-18.04-base-image",
+    "box_basename": "ubuntu-18.04-ansible-base-image",
     "build_directory": "./builds",
     "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
@@ -126,10 +126,10 @@
     "network_dhcp_server_ip": "192.168.56.100",
     "network_dhcp_upper_ip": "192.168.56.200",
     "network_interface_ip": "192.168.56.1",
-    "network_interface_name": "vboxnet0",
+    "network_interface_name": "vboxnet1",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed.cfg",
-    "template": "ubuntu-18.04-base-image",
+    "template": "ubuntu-18.04-ansible-base-image",
     "version": "TIMESTAMP"
   }
 }
