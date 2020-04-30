@@ -17,8 +17,12 @@ Ubuntu otomatik kurulumu yaparken ubuntu'ya yükleme sırasında kullanacağı n
     ["modifyvm", "{{.Name}}", "--natpf2","guest8080,tcp,,8080,,8080"]
 
 
-sshpass tüm makinelerde kurulu olması gerekmektedir.
+sudo pip3 install -r requirements.txt
+
+sshpass kendi makinemiz de dahil tüm makinelerde kurulu olması gerekmektedir.
 ssh-copy-id -i ~/.ssh/id_rsa.pub iaktas@192.168.56.101
+
+ansible-playbook -i inventory/multinode/hosts.ini  --become --become-user=root cluster.yml
 
 Master ve node'lar için memory kontrolü yapıyor. Bu kaldırıldı.
 Tüm kurulum yapıldıktan sonra master'da aşağıdaki komutlar çalıştırılmadan önce şöyle bir hata alınıyordu:
