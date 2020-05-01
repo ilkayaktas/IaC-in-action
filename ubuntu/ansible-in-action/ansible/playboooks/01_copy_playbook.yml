@@ -9,7 +9,7 @@
     - name: Copy files from task
       copy:
         src: ../files/something.txt
-        dest: /home/iaktas/something1.conf
+        dest: /home/iaktas/something-new.conf
         owner: iaktas
         group: iaktas
         mode: '0644'  

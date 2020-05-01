@@ -1,7 +1,7 @@
 # ansible-playbook playboooks/03_ping_playbook.yml
 ---
 - hosts: kubernetes-cluster
-  remote_user: iaktas
+  # remote_user: iaktas
   order: sorted # inventory, reverse_inventory, sorted, reverse_sorted, shuffle
   tasks:
     - name: Test connection
