@@ -7,11 +7,11 @@ sudo apt update
 sudo sed -i "s/us/tr/g" /etc/default/keyboard
 
 # Install pip
-echo 'y' | sudo apt install python-pip
+echo 'y' | sudo apt install python3-pip
 
-sudo pip2 install jinja2 --upgrade
+sudo pip3 install jinja2==2.11.1 --upgrade
 
-sudo pip2 install ansible==2.7.8
+sudo pip3 install ansible==2.9.6
 
 sudo apt install htop
 

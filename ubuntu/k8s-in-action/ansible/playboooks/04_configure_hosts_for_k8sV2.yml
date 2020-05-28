@@ -1,0 +1,13 @@
+# ansible-playbook playboooks/04_configure_hosts_for_k8sV2.yml
+---
+- hosts: kubernetes-cluster
+  vars_files:
+    - ../vars/configV2.yml
+  tasks:
+    - name: Create VMs
+      include_tasks: ../tasks/create-vm.yml
+      loop: 
+        - { name: 'kubernetes-master_V2', ip: '192.168.56.101' }
+        - { name: 'kubernetes-node1_V2', ip: '192.168.56.102' }
+        - { name: 'kubernetes-node2_V2', ip: '192.168.56.103' }
+...
