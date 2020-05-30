@@ -1,4 +1,4 @@
-# ansible-playbook playboooks/04_configure_hosts_for_k8sV2.yml
+# ansible-playbook playboooks/configure_hosts_for_k8sV2.yml
 ---
 - hosts: kubernetes-cluster
   vars_files:

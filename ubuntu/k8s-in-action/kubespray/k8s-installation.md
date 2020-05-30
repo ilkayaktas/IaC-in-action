@@ -34,3 +34,30 @@ export KUBECONFIG=$HOME/admin.conf
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl get pods -n kube-system
+
+
+TASK [kubernetes/preinstall : Stop if even number of etcd hosts] ***************
+fatal: [kubernetes-master]: FAILED! => {
+    "assertion": "groups.etcd|length is not divisibleby 2",
+    "changed": false,
+    "evaluated_to": false,
+    "msg": "Assertion failed"
+}
+fatal: [kubernetes-master-replica]: FAILED! => {
+    "assertion": "groups.etcd|length is not divisibleby 2",
+    "changed": false,
+    "evaluated_to": false,
+    "msg": "Assertion failed"
+}
+fatal: [kubernetes-node1]: FAILED! => {
+    "assertion": "groups.etcd|length is not divisibleby 2",
+    "changed": false,
+    "evaluated_to": false,
+    "msg": "Assertion failed"
+}
+fatal: [kubernetes-node2]: FAILED! => {
+    "assertion": "groups.etcd|length is not divisibleby 2",
+    "changed": false,
+    "evaluated_to": false,
+    "msg": "Assertion failed"
+}

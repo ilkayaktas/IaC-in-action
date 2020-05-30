@@ -31,4 +31,8 @@
   become: true
   delegate_to: "{{ item.name }}"
   shell: sudo /etc/init.d/networking restart
+- name: Apply netplan {{ item.name }}
+  become: true
+  delegate_to: "{{ item.name }}"
+  shell: sudo netplan apply
 ...
