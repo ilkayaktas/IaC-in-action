@@ -36,6 +36,10 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl get pods -n kube-system
 
+// Otomatik tamamlama için aşağıdaki komutlar giyilebilir.
+sudo apt install bash-completion
+source <(kubectl completion bash)
+echo "source <(kubectl completion bash)" >> ~/.bashrc 
 
 TASK [kubernetes/preinstall : Stop if even number of etcd hosts] ***************
 fatal: [kubernetes-master]: FAILED! => {
