@@ -13,4 +13,3 @@
         - { name: 'kubernetes-node3', ip: '192.168.56.104' }
         - { name: 'kubernetes-master-replica', ip: '192.168.56.110' }
 ...
-
