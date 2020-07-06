@@ -1,0 +1,94 @@
+---
+# Tests for contrib/terraform/
+.terraform_install:
+  extends: .job
+  before_script:
+    - update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+    - ./tests/scripts/rebase.sh
+    - ./tests/scripts/testcases_prepare.sh
+    - ./tests/scripts/terraform_install.sh
+    # Set Ansible config
+    - cp ansible.cfg ~/.ansible.cfg
+    # Prepare inventory
+    - cp contrib/terraform/$PROVIDER/sample-inventory/cluster.tfvars .
+    - ln -s contrib/terraform/$PROVIDER/hosts
+    - terraform init contrib/terraform/$PROVIDER
+    # Copy SSH keypair
+    - mkdir -p ~/.ssh
+    - echo "$PACKET_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+    - chmod 400 ~/.ssh/id_rsa
+    - echo "$PACKET_PUBLIC_KEY" | base64 -d > ~/.ssh/id_rsa.pub
+
+.terraform_validate:
+  extends: .terraform_install
+  stage: unit-tests
+  only: ['master', /^pr-.*$/]
+  script:
+    - terraform validate -var-file=cluster.tfvars contrib/terraform/$PROVIDER
+    - terraform fmt -check -diff contrib/terraform/$PROVIDER
+
+.terraform_apply:
+  extends: .terraform_install
+  stage: deploy-part2
+  when: manual
+  only: [/^pr-.*$/]
+  variables:
+    ANSIBLE_INVENTORY_UNPARSED_FAILED: "true"
+    ANSIBLE_INVENTORY: hosts
+    CI_PLATFORM: tf
+    TF_VAR_ssh_user: $SSH_USER
+    TF_VAR_cluster_name: $CI_JOB_ID
+  script:
+    - tests/scripts/testcases_run.sh
+  after_script:
+    # Cleanup regardless of exit code
+    - ./tests/scripts/testcases_cleanup.sh
+
+tf-validate-openstack:
+  extends: .terraform_validate
+  variables:
+    TF_VERSION: 0.12.12
+    PROVIDER: openstack
+    CLUSTER: $CI_COMMIT_REF_NAME
+
+tf-validate-packet:
+  extends: .terraform_validate
+  variables:
+    TF_VERSION: 0.12.12
+    PROVIDER: packet
+    CLUSTER: $CI_COMMIT_REF_NAME
+
+tf-validate-aws:
+  extends: .terraform_validate
+  variables:
+    TF_VERSION: 0.12.12
+    PROVIDER: aws
+    CLUSTER: $CI_COMMIT_REF_NAME
+
+# tf-packet-ubuntu16-default:
+#   extends: .terraform_apply
+#   variables:
+#     TF_VERSION: 0.12.12
+#     PROVIDER: packet
+#     CLUSTER: $CI_COMMIT_REF_NAME
+#     TF_VAR_number_of_k8s_masters: "1"
+#     TF_VAR_number_of_k8s_nodes: "1"
+#     TF_VAR_plan_k8s_masters: t1.small.x86
+#     TF_VAR_plan_k8s_nodes: t1.small.x86
+#     TF_VAR_facility: ewr1
+#     TF_VAR_public_key_path: ""
+#     TF_VAR_operating_system: ubuntu_16_04
+#
+# tf-packet-ubuntu18-default:
+#   extends: .terraform_apply
+#   variables:
+#     TF_VERSION: 0.12.12
+#     PROVIDER: packet
+#     CLUSTER: $CI_COMMIT_REF_NAME
+#     TF_VAR_number_of_k8s_masters: "1"
+#     TF_VAR_number_of_k8s_nodes: "1"
+#     TF_VAR_plan_k8s_masters: t1.small.x86
+#     TF_VAR_plan_k8s_nodes: t1.small.x86
+#     TF_VAR_facility: ams1
+#     TF_VAR_public_key_path: ""
+#     TF_VAR_operating_system: ubuntu_18_04

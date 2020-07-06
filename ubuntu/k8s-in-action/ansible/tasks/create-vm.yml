@@ -15,7 +15,7 @@
   wait_for:
     port: 22
     host: "{{ vm_ip.stdout }}"
-- name: Add {{ item.name }} VM to [kubernetes-nodes] groups in inventory
+- name: Add {{ item.name }} VM to [kubernetes-nodes] groups in inventory for further use in set-static-ip.yml
   add_host:
     name: "{{ item.name }}"
     groups: "kubernetes-nodes"
