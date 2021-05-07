@@ -1,5 +1,5 @@
 ---
-ova_path: ../../builds/packer-ubuntu-18.04-base-image-virtualbox/ubuntu-18.04-base-image.ova
+ova_path: ../../builds/packer-ubuntu-18.04.5-base-image-virtualbox/ubuntu-18.04.5-base-image.ova
 disk_base_dir: '~/VirtualBox\ VMs/{{ item.name }}'
 vm_ssh_password: iaktas
 os_gateway: 192.168.56.1

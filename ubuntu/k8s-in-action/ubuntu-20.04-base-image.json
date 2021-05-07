@@ -20,7 +20,7 @@
         " locale=en_US.UTF-8<wait>",
         " netcfg/get_domain=vm<wait>",
         " netcfg/get_hostname=vagrant<wait>",
-        " netcfg/choose_interface=enp0s8", 
+        " netcfg/choose_interface=enp0s8",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
         " preseed/url=http://{{user `network_interface_ip`}}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
@@ -29,38 +29,89 @@
       ],
       "boot_wait": "5s",
       "disk_size": "{{user `disk_size`}}",
-      "guest_additions_url": "{{ user `guest_additions_url` }}",
+      "format": "ova",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_url": "{{ user `guest_additions_url` }}",
       "guest_os_type": "Ubuntu_64",
       "hard_drive_interface": "sata",
       "headless": "{{ user `headless` }}",
       "http_directory": "{{user `http_directory`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum_type`}}:{{user `iso_checksum`}}",
       "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
       "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-virtualbox",
       "shutdown_command": "echo 'iaktas' | sudo -S shutdown -P now",
-      "ssh_password": "iaktas",
-      "ssh_username": "iaktas",
       "ssh_host": "127.0.0.1",
+      "ssh_password": "iaktas",
       "ssh_port": 2222,
       "ssh_skip_nat_mapping": "true",
-      "format": "ova",
-      "ssh_wait_timeout": "10000s",
+      "ssh_timeout": "10000s",
+      "ssh_username": "iaktas",
       "type": "virtualbox-iso",
       "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}"],
-        ["modifyvm", "{{.Name}}", "--vram", "{{ user `vram` }}"],
-        ["modifyvm", "{{.Name}}", "--nic1", "hostonly"],
-        ["modifyvm", "{{.Name}}", "--hostonlyadapter1", "{{user `network_interface_name`}}"],
-        ["modifyvm", "{{.Name}}", "--nic2", "nat"],
-        ["modifyvm", "{{.Name}}", "--natpf2","guestssh,tcp,,2222,,22"],
-        ["modifyvm", "{{.Name}}", "--natpf2","guest80,tcp,,80,,80"],
-        ["modifyvm", "{{.Name}}", "--natpf2","guest8080,tcp,,8080,,8080"]
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{ user `memory` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "{{ user `vram` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nic1",
+          "hostonly"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--hostonlyadapter1",
+          "{{user `network_interface_name`}}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--nic2",
+          "nat"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--natpf2",
+          "guestssh,tcp,,2222,,22"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--natpf2",
+          "guest80,tcp,,80,,80"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--natpf2",
+          "guest8080,tcp,,8080,,8080"
+        ]
       ],
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template` }}"
+    }
+  ],
+  "post-processors": [
+    {
+      "keep_input_artifact": true,
+      "output": "{{ user `build_directory` }}/{{user `box_basename`}}.{{.Provider}}.box",
+      "type": "vagrant"
     }
   ],
   "provisioners": [
@@ -89,32 +140,24 @@
       "type": "shell"
     }
   ],
-  "post-processors": [
-    {
-      "output": "{{ user `build_directory` }}/{{user `box_basename`}}.{{.Provider}}.box",
-      "type": "vagrant",
-      "keep_input_artifact": true
-    }
-  ],
   "variables": {
     "box_basename": "ubuntu-20.04-base-image",
     "build_directory": "./builds",
-    "http_directory": "{{template_dir}}/http",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "cpus": "2",
     "disk_size": "65536",
-    "vram": "16",
-    "headless": "",
-    "http_proxy": "{{env `http_proxy`}}",
-    "https_proxy": "{{env `https_proxy`}}",   
     "guest_additions_url": "",
-    "iso_checksum": "36f15879bd9dfd061cd588620a164a82972663fdd148cce1f70d57d314c21b73",
+    "headless": "",
+    "http_directory": "{{template_dir}}/http",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "iso_checksum": "69460b49c6781a845ca561263af3850e107814ffb9c08a19555e819d49feef4c",
     "iso_checksum_type": "sha256",
-    "iso_name": "ubuntu-20.04-legacy-server-amd64.iso",
+    "iso_name": "ubuntu-20.04.2-live-server-arm64.iso",
     "memory": "5000",
     "mirror": "http://cdimage.ubuntu.com",
-    "mirror_directory": "ubuntu-legacy-server/releases/20.04/release",
-    "name": "ubuntu-20.04",
+    "mirror_directory": "ubuntu/releases/20.04.2/release/",
+    "name": "ubuntu-20.04.2",
     "network_dhcp_lower_ip": "192.168.56.101",
     "network_dhcp_netmask": "255.255.255.0",
     "network_dhcp_server_ip": "192.168.56.100",
@@ -123,7 +166,8 @@
     "network_interface_name": "vboxnet0",
     "no_proxy": "{{env `no_proxy`}}",
     "preseed_path": "preseed.cfg",
-    "template": "ubuntu-20.04-base-image",
-    "version": "TIMESTAMP"
+    "template": "ubuntu-20.04.2-base-image",
+    "version": "TIMESTAMP",
+    "vram": "16"
   }
 }
